@@ -1,0 +1,11 @@
+{
+  "name": "nodejs-mongodb-api",
+  "version": "1.0.0",
+  "description": "simple nodejs shop api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "benyang",
+  "license": "ISC"
+}
