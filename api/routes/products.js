@@ -28,4 +28,10 @@ router.post('/', (req, res, next) => {
   });
 });
 
+router.patch('/:productId', (req, res, next) => {
+  res.status(200).json({
+    message: `Patched product of ID: ${req.params.productId}`
+  });
+});
+
 module.exports = router;
