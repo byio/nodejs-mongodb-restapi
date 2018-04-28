@@ -8,6 +8,20 @@ router.get('/', (req, res, next) => {
   });
 });
 
+router.get('/:productId', (req, res, next) => {
+  const id = req.params.productId;
+  if (id === 'special') {
+    res.status(200).json({
+      message: 'You have passed the special ID!',
+      id
+    });
+  } else {
+    res.status(200).json({
+      message: `You have passed a regular ID of ${id}`
+    });
+  }
+});
+
 router.post('/', (req, res, next) => {
   res.status(200).json({
     message: 'Handling POST requests to /products'
