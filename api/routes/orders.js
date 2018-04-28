@@ -8,4 +8,10 @@ router.get('/', (req, res, next) => {
   });
 });
 
+router.post('/', (req, res, next) => {
+  res.status(201).json({
+    message: 'Handling POST requests to /orders'
+  });
+});
+
 module.exports = router;
