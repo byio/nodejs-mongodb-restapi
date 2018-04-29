@@ -14,4 +14,21 @@ const orderRoutes = require('./api/routes/orders');
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 
+// handling errors
+  // middleware to create a 'not found' error if a request is not caught by any of the previous middleware
+app.use((req, res, next) => {
+  const error = new Error('Not Found');
+  error.status = 404;
+  next(error);
+});
+  // middleware to catch all errors
+app.use((error, req, res, next) => {
+  res.status(error.status || 500)
+     .json({
+       error: {
+         message: error.message
+       }
+     });
+});
+
 module.exports = app;
