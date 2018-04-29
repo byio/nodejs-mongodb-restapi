@@ -1,10 +1,15 @@
 const express = require('express');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 
 const app = express();
 
 // morgan logger middleware
 app.use(morgan('dev'));
+
+// set up body-parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // import routes
 const productRoutes = require('./api/routes/products');
