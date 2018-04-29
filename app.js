@@ -4,16 +4,16 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+// import routes
+const productRoutes = require('./api/routes/products');
+const orderRoutes = require('./api/routes/orders');
+
 // morgan logger middleware
 app.use(morgan('dev'));
 
 // set up body-parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-// import routes
-const productRoutes = require('./api/routes/products');
-const orderRoutes = require('./api/routes/orders');
 
 // routes middleware
 app.use('/products', productRoutes);
