@@ -1,12 +1,19 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const app = express();
 
 // import routes
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
+
+// connect to mongoDB Atlas
+mongoose.connect(
+  `mongodb+srv://benyang:${process.env.MONGODB_ATLAS_PASSWORD}@nodejs-mongodb-restapi-hytuw.mongodb.net/test`,
+  { useMongoClient: true }
+);
 
 // morgan logger middleware
 app.use(morgan('dev'));
