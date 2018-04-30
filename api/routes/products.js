@@ -1,4 +1,8 @@
 const express = require('express');
+const mongoose = require('mongoose');
+
+// import product model
+const Product = require('../models/product');
 
 const router = express.Router();
 
@@ -23,10 +27,14 @@ router.get('/:productId', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  const createdProduct = {
+  const createdProduct = new Product({
+    _id: new mongoose.Types.ObjectId(),
     name: req.body.name,
     price: req.body.price
-  };
+  });
+  createdProduct.save()
+         .then(result => console.log(result))
+         .catch(err => console.log(err));
   res.status(201).json({
     message: 'Handling POST requests to /products',
     createdProduct
