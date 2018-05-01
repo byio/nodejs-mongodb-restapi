@@ -13,9 +13,9 @@ const orderRoutes = require('./api/routes/orders');
 require('dotenv').config();
 
 // connect to mongoDB Atlas
-const uri = `mongodb+srv://benyang:${process.env.MONGODB_ATLAS_PASSWORD}@nodejs-mongodb-restapi-hytuw.mongodb.net/test`;
+const uri = `mongodb://${process.env.MLAB_USERNAME}:${process.env.MLAB_PASSWORD}@ds163769.mlab.com:63769/nodejs-mongodb-restapi`;
 mongoose.connect(uri)
-        .then(console.log('Connected to MongoDB Atlas.'));
+        .then(console.log('Connected to mLab.'));
 
 // morgan logger middleware
 app.use(morgan('dev'));
