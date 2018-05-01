@@ -14,16 +14,16 @@ router.get('/', (req, res, next) => {
 
 router.get('/:productId', (req, res, next) => {
   const id = req.params.productId;
-  if (id === 'special') {
-    res.status(200).json({
-      message: 'You have passed the special ID!',
-      id
-    });
-  } else {
-    res.status(200).json({
-      message: `You have passed a regular ID of ${id}`
-    });
-  }
+  Product.findById()
+         .exec()
+         .then(doc => {
+           console.log(doc);
+           res.status(200).json(doc);
+         })
+         .catch(error => {
+           console.log(error);
+           res.status(500).json({ error })
+         });
 });
 
 router.post('/', (req, res, next) => {
