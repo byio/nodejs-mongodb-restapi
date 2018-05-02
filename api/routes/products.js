@@ -33,12 +33,17 @@ router.post('/', (req, res, next) => {
     price: req.body.price
   });
   createdProduct.save()
-         .then(result => console.log(result))
-         .catch(err => console.log(err));
-  res.status(201).json({
-    message: 'Handling POST requests to /products',
-    createdProduct
-  });
+         .then(result => {
+           console.log(result);
+           res.status(201).json({
+             message: 'Handling POST requests to /products',
+             createdProduct
+           });
+         })
+         .catch(error => {
+           console.log(error);
+           res.status(500).json({ error });
+         });
 });
 
 router.patch('/:productId', (req, res, next) => {
