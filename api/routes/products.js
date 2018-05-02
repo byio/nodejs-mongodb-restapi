@@ -18,7 +18,13 @@ router.get('/:productId', (req, res, next) => {
          .exec()
          .then(doc => {
            console.log(doc);
-           res.status(200).json(doc);
+           // check that doc exists (not null, which is returned for valid but non-existent ID)
+           if (doc) {
+            res.status(200).json(doc);
+          } else {
+            // ... else if null is returned (ID valid but non-existent)
+            res.status(404).json({ message: 'No valid entry found.' });
+          }
          })
          .catch(error => {
            console.log(error);
