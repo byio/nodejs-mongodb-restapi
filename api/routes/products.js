@@ -60,9 +60,27 @@ router.post('/', (req, res, next) => {
 });
 
 router.patch('/:productId', (req, res, next) => {
-  res.status(200).json({
-    message: `Patched product of ID: ${req.params.productId}`
-  });
+  const updateOps = {};
+  // iterate through request body
+  for (const ops of req.body) {
+    /*
+      for each property in the request body, add it to the updateOps object
+    */
+    updateOps[ops.propName] = ops.value;
+  }
+  // update product using mongoose
+  Product.update(
+    { _id: req.params.productId },
+    { $set: updateOps }
+  ).exec()
+   .then(result => {
+     console.log(result);
+     res.status(200).json(result);
+   })
+   .catch(error => {
+     console.log(error);
+     res.status(500).json({ error });
+   });
 });
 
 router.delete('/:productId', (req, res, next) => {
