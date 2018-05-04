@@ -67,10 +67,21 @@ router.post('/', (req, res, next) => {
   createdProduct.save()
          .then(result => {
            console.log(result);
-           res.status(201).json({
-             message: 'Handling POST requests to /products',
-             createdProduct
-           });
+           const { _id, name, price } = result;
+           const jsonResponse = {
+             message: 'Created product successfully!',
+             _id,
+             name,
+             price,
+             requests: [
+               {
+                 type: 'GET',
+                 url: `http://localhost:4000/products/${_id}`,
+                 description: 'retrieve data about individual products'
+               }
+             ]
+           };
+           res.status(201).json(jsonResponse);
          })
          .catch(error => {
            console.log(error);
