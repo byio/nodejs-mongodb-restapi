@@ -20,10 +20,13 @@ router.get('/', (req, res, next) => {
                  _id,
                  name,
                  price,
-                 request: {
-                   type: 'GET',
-                   url: `http://localhost:4000/products/${_id}`
-                 }
+                 requests: [
+                   {
+                     type: 'GET',
+                     url: `http://localhost:4000/products/${_id}`,
+                     description: 'retrieve data about individual products'
+                   }
+                 ]
                };
              })
            };
