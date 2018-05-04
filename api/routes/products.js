@@ -66,7 +66,7 @@ router.post('/', (req, res, next) => {
   });
   createdProduct.save()
          .then(result => {
-           console.log(result);
+           // console.log(result);
            const { _id, name, price } = result;
            const jsonResponse = {
              message: 'Created product successfully!',
