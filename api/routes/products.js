@@ -8,10 +8,26 @@ const router = express.Router();
 
 router.get('/', (req, res, next) => {
   Product.find()
+         .select('_id name price')
          .exec()
          .then(docs => {
-           console.log(docs);
-           res.status(200).json(docs);
+           // console.log(docs);
+           const jsonResponse = {
+             count: docs.length,
+             products: docs.map(doc => {
+               const { _id, name, price } = doc;
+               return {
+                 _id,
+                 name,
+                 price,
+                 request: {
+                   type: 'GET',
+                   url: `http://localhost:4000/products/${_id}`
+                 }
+               };
+             })
+           };
+           res.status(200).json(jsonResponse);
          })
          .catch(error => {
            console.log(error);
