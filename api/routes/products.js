@@ -104,9 +104,7 @@ router.patch('/:productId', (req, res, next) => {
   const updateOps = {};
   // iterate through request body
   for (const ops of req.body) {
-    /*
-      for each property in the request body, add it to the updateOps object
-    */
+    // for each property in the request body, add it to the updateOps object
     updateOps[ops.propName] = ops.value;
   }
   // update product using mongoose
