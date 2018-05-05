@@ -41,12 +41,23 @@ router.get('/', (req, res, next) => {
 router.get('/:productId', (req, res, next) => {
   const id = req.params.productId;
   Product.findById(id)
+         .select('_id name price')
          .exec()
          .then(doc => {
-           console.log(doc);
+           // console.log(doc);
            // check that doc exists (not null, which is returned for valid but non-existent ID)
            if (doc) {
-            res.status(200).json(doc);
+            const jsonResponse = {
+              product: doc,
+              requests: [
+                {
+                  type: 'GET',
+                  url: 'http://localhost:4000/products',
+                  description: 'retrieve data about all products'
+                }
+              ]
+            };
+            res.status(200).json(jsonResponse);
           } else {
             // ... else if null is returned (ID valid but non-existent)
             res.status(404).json({ message: 'No valid entry found.' });
