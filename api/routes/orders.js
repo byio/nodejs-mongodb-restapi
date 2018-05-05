@@ -1,4 +1,8 @@
 const express = require('express');
+const mongoose = require('mongoose');
+
+// import order model
+const Order = require('../models/order');
 
 const router = express.Router();
 
@@ -15,14 +19,19 @@ router.get('/:orderId', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  const createdOrder = {
-    productId: req.body.productId,
+  const newOrder = new Order({
+    _id: mongoose.Types.ObjectId(),
+    product: req.body.productId,
     quantity: req.body.quantity
-  };
-  res.status(201).json({
-    message: 'Handling POST requests to /orders',
-    createdOrder
   });
+  newOrder.save()
+       .then(result => {
+         res.status(201).json(result);
+       })
+       .catch(error => {
+         console.log(error);
+         res.status(500).json({ error });
+       });
 });
 
 router.delete('/:orderId', (req, res, next) => {
