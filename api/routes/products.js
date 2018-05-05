@@ -113,8 +113,20 @@ router.patch('/:productId', (req, res, next) => {
     { $set: updateOps }
   ).exec()
    .then(result => {
-     console.log(result);
-     res.status(200).json(result);
+     // console.log(result);
+     const changes = req.body.map(change => change.propName);
+     const jsonResponse = {
+       message: 'Product information updated successfully!',
+       changes,
+       requests: [
+         {
+           type: 'GET',
+           url: `http://localhost:4000/products/${req.params.productId}`,
+           description: `retrieve data about product with id: ${req.params.productId}`
+         }
+       ]
+     };
+     res.status(200).json(jsonResponse);
    })
    .catch(error => {
      console.log(error);
