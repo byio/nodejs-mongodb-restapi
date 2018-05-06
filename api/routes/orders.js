@@ -44,6 +44,11 @@ router.get('/:orderId', (req, res, next) => {
 router.post('/', (req, res, next) => {
   Product.findById(req.body.productId)
          .then(product => {
+           if (!product) {
+             return res.status(404).json({
+               message: 'Product not found.'
+             });
+           }
            const newOrder = new Order({
              _id: mongoose.Types.ObjectId(),
              product: req.body.productId,
