@@ -7,9 +7,31 @@ const Order = require('../models/order');
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-  res.status(200).json({
-    message: 'Handling GET requests to /orders'
-  });
+  Order.find()
+       .select('_id product quantity')
+       .exec()
+       .then(docs => {
+         const jsonResponse = {
+           count: docs.length,
+           orders: docs.map(doc => {
+             const { _id, product, quantity } = doc;
+             return {
+               _id, product, quantity,
+               requests: [
+                 {
+                   type: 'GET',
+                   url: `http://localhost:4000/orders/${_id}`,
+                   description: 'get information about individual orders'
+                 }
+               ]
+             };
+           })
+         };
+         res.status(200).json(jsonResponse);
+       })
+       .catch(error => {
+         res.status(500).json({ error });
+       });
 });
 
 router.get('/:orderId', (req, res, next) => {
