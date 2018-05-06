@@ -48,7 +48,21 @@ router.post('/', (req, res, next) => {
   });
   newOrder.save()
        .then(result => {
-         res.status(201).json(result);
+         const { _id, product, quantity } = result;
+         const jsonResponse = {
+           message: 'New order created!',
+           createdOrder: {
+             _id, product, quantity
+           },
+           requests: [
+             {
+               type: 'GET',
+               url: `http://localhost:4000/orders/${_id}`,
+               description: 'get information about individual orders'
+             }
+           ]
+         };
+         res.status(201).json(jsonResponse);
        })
        .catch(error => {
          console.log(error);
