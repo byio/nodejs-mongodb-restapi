@@ -46,22 +46,22 @@ router.get('/:productId', (req, res, next) => {
          .then(doc => {
            // console.log(doc);
            // check that doc exists (not null, which is returned for valid but non-existent ID)
-           if (doc) {
-            const jsonResponse = {
-              product: doc,
-              requests: [
-                {
-                  type: 'GET',
-                  url: 'http://localhost:4000/products',
-                  description: 'retrieve data about all products'
-                }
-              ]
-            };
-            res.status(200).json(jsonResponse);
-          } else {
-            // ... else if null is returned (ID valid but non-existent)
-            res.status(404).json({ message: 'No valid entry found.' });
-          }
+           if (!doc) {
+             return res.status(404).json({
+               message: 'No valid entry found.'
+             });
+           }
+           const jsonResponse = {
+             product: doc,
+             requests: [
+               {
+                 type: 'GET',
+                 url: 'http://localhost:4000/products',
+                 description: 'retrieve data about all products'
+               }
+             ]
+           };
+           res.status(200).json(jsonResponse);
          })
          .catch(error => {
            console.log(error);
@@ -146,7 +146,7 @@ router.delete('/:productId', (req, res, next) => {
                  type: 'POST',
                  url: 'http://localhost:4000/products',
                  body: { name: 'String', price: 'Number' },
-                 description: 'create a new product'                
+                 description: 'create a new product'
                }
              ]
            };
