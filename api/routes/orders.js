@@ -39,7 +39,7 @@ router.get('/', (req, res, next) => {
 router.get('/:orderId', (req, res, next) => {
   Order.findById(req.params.orderId)
        .select('_id product quantity')
-       .populate('product')
+       .populate('product', '-__v')
        .exec()
        .then(order => {
          if (!order) {
