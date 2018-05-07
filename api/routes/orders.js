@@ -39,6 +39,7 @@ router.get('/', (req, res, next) => {
 router.get('/:orderId', (req, res, next) => {
   Order.findById(req.params.orderId)
        .select('_id product quantity')
+       .populate('product')
        .exec()
        .then(order => {
          if (!order) {
