@@ -36,9 +36,26 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:orderId', (req, res, next) => {
-  res.status(200).json({
-    message: `Handling GET requests to /orders/${req.params.orderId}`
-  })
+  Order.findById(req.params.orderId)
+       .select('_id product quantity')
+       .exec()
+       .then(order => {
+         const jsonResponse = {
+           message: `Order ${req.params.orderId} found.`,
+           order,
+           requests: [
+             {
+               type: 'GET',
+               url: 'http://localhost:4000/orders',
+               description: 'retrieve data about all orders'
+             }
+           ]
+         };
+         res.status(200).json(jsonResponse);
+       })
+       .catch(error => {
+         res.status(500).json({ error });
+       });
 });
 
 router.post('/', (req, res, next) => {
