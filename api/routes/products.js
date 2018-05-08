@@ -8,7 +8,15 @@ const Product = require('../models/product');
 const router = express.Router();
 
 // initialize multer
-const upload = multer({ dest: 'uploads/' });
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './uploads/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, new Date().toISOString() + file.originalname);
+  }
+});
+const upload = multer({ storage });
 
 router.get('/', (req, res, next) => {
   Product.find()
