@@ -8,6 +8,7 @@ const app = express();
 // import routes
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
+const userRoutes = require('./api/routes/users');
 
 // require and configure dotenv (dev)
 require('dotenv').config();
@@ -47,6 +48,7 @@ app.use((req, res, next) => {
 // routes middleware
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
+app.use('/users', userRoutes);
 
 // handling errors
   // middleware to create a 'not found' error if a request is not caught by any of the previous middleware
