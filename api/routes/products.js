@@ -100,7 +100,12 @@ router.get('/:productId', (req, res, next) => {
 });
 
 router.post('/', upload.single('productImage'), (req, res, next) => {
-  console.log(req.file);
+  if (!req.file) {
+    return res.status(422).json({
+      message: 'Please provide a valid product image (productImage).'
+    });
+  };
+  // console.log(req.file);
   const createdProduct = new Product({
     _id: new mongoose.Types.ObjectId(),
     name: req.body.name,
