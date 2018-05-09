@@ -24,6 +24,9 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// static directory
+app.use('/uploads', express.static('public/uploads'));
+
 // middleware to set headers to allow CORS (must come before routes middleware)
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
