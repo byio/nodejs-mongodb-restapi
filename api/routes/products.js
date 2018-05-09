@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
+const path = require('path');
 
 // import product model
 const Product = require('../models/product');
@@ -17,7 +18,10 @@ const storage = multer.diskStorage({
   }
 });
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+  const allowedExt = /jpeg|jpg|png/;
+  const extMatch = allowedExt.test(path.extname(file.originalname).toLowerCase());
+  const mimeMatch = allowedExt.test(file.mimetype);
+  if (extMatch && mimeMatch) {
     cb(null, true);
   } else {
     cb(new Error('Invalid file extension.'), false);
