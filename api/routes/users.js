@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
@@ -63,8 +64,18 @@ router.post('/login', (req, res, next) => {
             });
           }
           if (result) {
+            const jwtPayload = {
+              email: user.email,
+              userId: user._id
+            };
+            const jwtPrivateKey = process.env.JWT_PRIVATE_KEY;
+            const jwtOptions = {
+              expiresIn: '1h'
+            };
+            const token = jwt.sign(jwtPayload, jwtPrivateKey, jwtOptions);
             return res.status(200).json({
-              message: 'Authentication successful.'
+              message: 'Authentication successful.',
+              token
             });
           }
           res.status(401).json({
