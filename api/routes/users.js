@@ -16,8 +16,8 @@ router.post('/signup', (req, res, next) => {
   const { username, email, password } = req.body;
   User.find({ email })
       .exec()
-      .then(user => {
-        if (user.length > 0) {
+      .then(userArr => {
+        if (userArr.length > 0) {
           return res.status(409).json({
             message: 'Email is already in use.'
           });
