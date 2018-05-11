@@ -140,7 +140,7 @@ router.post('/', checkAuth, upload.single('productImage'), (req, res, next) => {
          });
 });
 
-router.patch('/:productId', (req, res, next) => {
+router.patch('/:productId', checkAuth, (req, res, next) => {
   const updateOps = {};
   // iterate through request body
   for (const ops of req.body) {
@@ -174,7 +174,7 @@ router.patch('/:productId', (req, res, next) => {
    });
 });
 
-router.delete('/:productId', (req, res, next) => {
+router.delete('/:productId', checkAuth, (req, res, next) => {
   Product.remove({ _id: req.params.productId })
          .exec()
          .then(result => {
