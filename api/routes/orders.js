@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const checkAuth = require('check-auth');
+const checkAuth = require('../middleware/check-auth');
 
 // import order model
 const Order = require('../models/order');
