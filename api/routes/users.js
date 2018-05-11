@@ -68,11 +68,11 @@ router.post('/login', (req, res, next) => {
               email: user.email,
               userId: user._id
             };
-            const jwtPrivateKey = process.env.JWT_PRIVATE_KEY;
+            const jwtSecret = process.env.JWT_SECRET;
             const jwtOptions = {
               expiresIn: '1h'
             };
-            const token = jwt.sign(jwtPayload, jwtPrivateKey, jwtOptions);
+            const token = jwt.sign(jwtPayload, jwtSecret, jwtOptions);
             return res.status(200).json({
               message: 'Authentication successful.',
               token

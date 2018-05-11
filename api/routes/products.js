@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
 
+const checkAuth = require('../middleware/check-auth');
+
 // import product model
 const Product = require('../models/product');
 
@@ -99,7 +101,7 @@ router.get('/:productId', (req, res, next) => {
          });
 });
 
-router.post('/', upload.single('productImage'), (req, res, next) => {
+router.post('/', checkAuth, upload.single('productImage'), (req, res, next) => {
   if (!req.file) {
     return res.status(422).json({
       message: 'Please provide a valid product image (productImage).'
