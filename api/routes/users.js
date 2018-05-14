@@ -3,15 +3,13 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const UserController = require('../controllers/users');
+
 const User = require('../models/user');
 
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
-  res.status(200).json({
-    message: 'GET /users'
-  });
-});
+router.get('/', UserController.users_get_all);
 
 router.post('/signup', (req, res, next) => {
   const { username, email, password } = req.body;
