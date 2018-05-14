@@ -113,3 +113,29 @@ exports.users_login = (req, res, next) => {
         res.status(500).json({ error });
       });
 };
+
+exports.users_delete_one = (req, res, next) => {
+  const { userId } = req.params;
+  User.findById(userId)
+      .exec()
+      .then(user => {
+        if (!user) {
+          return res.status(404).json({
+            message: 'User not found.'
+          });
+        }
+        User.remove({ _id: userId })
+            .then(result => {
+              res.status(200).json({
+                message: `User ${req.params.userId} deleted.`,
+                result
+              });
+            })
+            .catch(error => {
+              res.status(500).json({ error });
+            });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+};
