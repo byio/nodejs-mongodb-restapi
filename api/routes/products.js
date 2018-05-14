@@ -44,44 +44,7 @@ router.get('/', ProductControllers.products_get_all);
 
 router.get('/:productId', ProductControllers.products_get_one);
 
-router.post('/', checkAuth, upload.single('productImage'), (req, res, next) => {
-  if (!req.file) {
-    return res.status(422).json({
-      message: 'Please provide a valid product image (productImage).'
-    });
-  };
-  // console.log(req.file);
-  const createdProduct = new Product({
-    _id: new mongoose.Types.ObjectId(),
-    name: req.body.name,
-    price: req.body.price,
-    productImage: req.file.path
-  });
-  createdProduct.save()
-         .then(result => {
-           // console.log(result);
-           const { _id, name, price, productImage } = result;
-           const jsonResponse = {
-             message: 'Created product successfully!',
-             _id,
-             name,
-             price,
-             productImage,
-             requests: [
-               {
-                 type: 'GET',
-                 url: `http://localhost:4000/products/${_id}`,
-                 description: 'retrieve data about individual products'
-               }
-             ]
-           };
-           res.status(201).json(jsonResponse);
-         })
-         .catch(error => {
-           console.log(error);
-           res.status(500).json({ error });
-         });
-});
+router.post('/', checkAuth, upload.single('productImage'), ProductControllers.products_create_new_product);
 
 router.patch('/:productId', checkAuth, (req, res, next) => {
   const updateOps = {};
