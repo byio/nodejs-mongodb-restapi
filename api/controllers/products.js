@@ -104,3 +104,37 @@ exports.products_create_new = (req, res, next) => {
            res.status(500).json({ error });
          });
 };
+
+exports.products_update_one = (req, res, next) => {
+  const updateOps = {};
+  // iterate through request body
+  for (const ops of req.body) {
+    // for each property in the request body, add it to the updateOps object
+    updateOps[ops.propName] = ops.value;
+  }
+  // update product using mongoose
+  Product.update(
+    { _id: req.params.productId },
+    { $set: updateOps }
+  ).exec()
+   .then(result => {
+     // console.log(result);
+     const changes = req.body.map(change => change.propName);
+     const jsonResponse = {
+       message: 'Product information updated successfully!',
+       changes,
+       requests: [
+         {
+           type: 'GET',
+           url: `http://localhost:4000/products/${req.params.productId}`,
+           description: `retrieve data about product with id: ${req.params.productId}`
+         }
+       ]
+     };
+     res.status(200).json(jsonResponse);
+   })
+   .catch(error => {
+     console.log(error);
+     res.status(500).json({ error });
+   });
+};
