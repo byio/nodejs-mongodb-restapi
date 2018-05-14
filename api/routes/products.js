@@ -5,6 +5,9 @@ const path = require('path');
 
 const checkAuth = require('../middleware/check-auth');
 
+// import products-related controller
+const ProductControllers = require('../controllers/products');
+
 // import product model
 const Product = require('../models/product');
 
@@ -37,69 +40,9 @@ const upload = multer({
    fileFilter
 });
 
-router.get('/', (req, res, next) => {
-  Product.find()
-         .select('_id name price productImage')
-         .exec()
-         .then(docs => {
-           // console.log(docs);
-           const jsonResponse = {
-             count: docs.length,
-             products: docs.map(doc => {
-               const { _id, name, price, productImage } = doc;
-               return {
-                 _id,
-                 name,
-                 price,
-                 productImage,
-                 requests: [
-                   {
-                     type: 'GET',
-                     url: `http://localhost:4000/products/${_id}`,
-                     description: 'retrieve data about individual products'
-                   }
-                 ]
-               };
-             })
-           };
-           res.status(200).json(jsonResponse);
-         })
-         .catch(error => {
-           console.log(error);
-           res.status(500).json({ error });
-         });
-});
+router.get('/', ProductControllers.products_get_all);
 
-router.get('/:productId', (req, res, next) => {
-  const id = req.params.productId;
-  Product.findById(id)
-         .select('_id name price productImage')
-         .exec()
-         .then(product => {
-           // console.log(doc);
-           // check that doc exists (not null, which is returned for valid but non-existent ID)
-           if (!product) {
-             return res.status(404).json({
-               message: 'No valid entry found.'
-             });
-           }
-           const jsonResponse = {
-             product,
-             requests: [
-               {
-                 type: 'GET',
-                 url: 'http://localhost:4000/products',
-                 description: 'retrieve data about all products'
-               }
-             ]
-           };
-           res.status(200).json(jsonResponse);
-         })
-         .catch(error => {
-           console.log(error);
-           res.status(500).json({ error })
-         });
-});
+router.get('/:productId', ProductControllers.products_get_one);
 
 router.post('/', checkAuth, upload.single('productImage'), (req, res, next) => {
   if (!req.file) {
