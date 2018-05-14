@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
 
@@ -7,9 +6,6 @@ const checkAuth = require('../middleware/check-auth');
 
 // import products-related controller
 const ProductControllers = require('../controllers/products');
-
-// import product model
-const Product = require('../models/product');
 
 const router = express.Router();
 
