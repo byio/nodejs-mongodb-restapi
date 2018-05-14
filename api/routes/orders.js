@@ -14,34 +14,7 @@ const router = express.Router();
 
 router.get('/', checkAuth, OrderController.orders_get_all);
 
-router.get('/:orderId', checkAuth, (req, res, next) => {
-  Order.findById(req.params.orderId)
-       .select('_id product quantity')
-       .populate('product', '-__v')
-       .exec()
-       .then(order => {
-         if (!order) {
-           return res.status(404).json({
-             message: 'Order not found.'
-           });
-         }
-         const jsonResponse = {
-           message: `Order ${req.params.orderId} found.`,
-           order,
-           requests: [
-             {
-               type: 'GET',
-               url: 'http://localhost:4000/orders',
-               description: 'retrieve data about all orders'
-             }
-           ]
-         };
-         res.status(200).json(jsonResponse);
-       })
-       .catch(error => {
-         res.status(500).json({ error });
-       });
-});
+router.get('/:orderId', checkAuth, OrderController.orders_get_one);
 
 router.post('/', checkAuth, (req, res, next) => {
   Product.findById(req.body.productId)
