@@ -39,6 +39,23 @@ exports.users_get_all = (req, res, next) => {
       });
 };
 
+exports.users_get_one = (req, res, next) => {
+  User.findById(req.params.userId)
+      .select('-__v')
+      .exec()
+      .then(user => {
+        if (!user) {
+          return res.status(404).json({
+            message: 'User not found.'
+          });
+        }
+        res.status(200).json(user);
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+};
+
 exports.users_signup = (req, res, next) => {
   const { username, email, password } = req.body;
   User.find({ email })
