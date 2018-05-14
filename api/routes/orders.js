@@ -1,14 +1,9 @@
 const express = require('express');
-const mongoose = require('mongoose');
 
 const checkAuth = require('../middleware/check-auth');
 
 // import orders-related controller
 const OrderController = require('../controllers/orders');
-
-// import order model
-const Order = require('../models/order');
-const Product = require('../models/product');
 
 const router = express.Router();
 
