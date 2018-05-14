@@ -7,9 +7,30 @@ exports.users_get_all = (req, res, next) => {
       .select('-__v')
       .exec()
       .then(users => {
-        res.status(200).json({
-          users
-        });
+        const jsonResponse = {
+          count: users.length,
+          users: users.map(user => {
+            const { _id, username, email } = user;
+            return {
+              _id,
+              username,
+              email,
+              requests: [
+                {
+                  type: 'POST',
+                  url: 'http://localhost:4000/users/signup',
+                  body: {
+                    username: 'String',
+                    email: 'Email',
+                    password: 'String'
+                  },
+                  description: 'Register new user.'
+                }
+              ]
+            };
+          })
+        };
+        res.status(200).json(jsonResponse);
       })
       .catch(error => {
         res.status(500).json({ error });
