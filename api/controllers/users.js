@@ -131,6 +131,49 @@ exports.users_login = (req, res, next) => {
       });
 };
 
+exports.users_update_one = (req, res, next) => {
+  const { userId } = req.params;
+  User.findById(userId)
+      .exec()
+      .then(user => {
+        if (!user) {
+          return res.status(404).json({
+            message: 'User not found.'
+          });
+        }
+        const updateOps = {};
+        for (const ops of req.body) {
+          updateOps[ops.propName] = ops.value;
+        }
+        User.update(
+          { _id: userId },
+          { $set: updateOps }
+        ).exec()
+         .then(result => {
+           const changes = req.body.map(change => change.propName);
+           const jsonResponse ={
+             message: `User ${userId} updated sucessfully.`,
+             changes,
+             result,
+             requests: [
+               {
+                 type: 'GET',
+                 url: `http://localhost:4000/users/${userId}`,
+                 description: `Retrieve data about user ${userId}.`
+               }
+             ]
+           };
+           res.status(200).json(jsonResponse);
+         })
+         .catch(error => {
+           res.status(500).json({ error });
+         });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+};
+
 exports.users_delete_one = (req, res, next) => {
   const { userId } = req.params;
   User.findById(userId)
