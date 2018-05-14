@@ -138,3 +138,27 @@ exports.products_update_one = (req, res, next) => {
      res.status(500).json({ error });
    });
 };
+
+exports.products_delete_one = (req, res, next) => {
+  Product.remove({ _id: req.params.productId })
+         .exec()
+         .then(result => {
+           // console.log(result);
+           const jsonResponse = {
+             message: `Product with ID ${req.params.productId} has been deleted successfully!`,
+             requests: [
+               {
+                 type: 'POST',
+                 url: 'http://localhost:4000/products',
+                 body: { name: 'String', price: 'Number' },
+                 description: 'create a new product'
+               }
+             ]
+           };
+           res.status(200).json(jsonResponse);
+         })
+         .catch(error => {
+           console.log(error);
+           res.status(500).json({ error });
+         });
+};

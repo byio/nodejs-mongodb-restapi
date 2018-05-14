@@ -48,28 +48,6 @@ router.post('/', checkAuth, upload.single('productImage'), ProductControllers.pr
 
 router.patch('/:productId', checkAuth, ProductControllers.products_update_one);
 
-router.delete('/:productId', checkAuth, (req, res, next) => {
-  Product.remove({ _id: req.params.productId })
-         .exec()
-         .then(result => {
-           // console.log(result);
-           const jsonResponse = {
-             message: `Product with ID ${req.params.productId} has been deleted successfully!`,
-             requests: [
-               {
-                 type: 'POST',
-                 url: 'http://localhost:4000/products',
-                 body: { name: 'String', price: 'Number' },
-                 description: 'create a new product'
-               }
-             ]
-           };
-           res.status(200).json(jsonResponse);
-         })
-         .catch(error => {
-           console.log(error);
-           res.status(500).json({ error });
-         });
-});
+router.delete('/:productId', checkAuth, ProductControllers.products_delete_one);
 
 module.exports = router;
