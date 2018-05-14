@@ -149,12 +149,12 @@ exports.products_delete_one = (req, res, next) => {
                message: 'Product not found.'
              });
            }
-           Product.remove({ _id: req.params.productId })
+           Product.remove({ _id: productId })
                   .exec()
                   .then(result => {
                     // console.log(result);
                     const jsonResponse = {
-                      message: `Product with ID ${req.params.productId} has been deleted successfully!`,
+                      message: `Product with ID ${productId} has been deleted successfully!`,
                       requests: [
                         {
                           type: 'POST',
