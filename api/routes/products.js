@@ -44,7 +44,7 @@ router.get('/', ProductControllers.products_get_all);
 
 router.get('/:productId', ProductControllers.products_get_one);
 
-router.post('/', checkAuth, upload.single('productImage'), ProductControllers.products_create_new_product);
+router.post('/', checkAuth, upload.single('productImage'), ProductControllers.products_create_new);
 
 router.patch('/:productId', checkAuth, (req, res, next) => {
   const updateOps = {};

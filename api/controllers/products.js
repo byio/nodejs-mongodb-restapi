@@ -66,7 +66,7 @@ exports.products_get_one = (req, res, next) => {
          });
 };
 
-exports.products_create_new_product = (req, res, next) => {
+exports.products_create_new = (req, res, next) => {
   if (!req.file) {
     return res.status(422).json({
       message: 'Please provide a valid product image (productImage).'
