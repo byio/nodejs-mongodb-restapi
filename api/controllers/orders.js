@@ -100,3 +100,25 @@ exports.orders_create_one = (req, res, next) => {
             });
           });
 };
+
+exports.orders_delete_one = (req, res, next) => {
+  Order.remove({ _id: req.params.orderId })
+       .exec()
+       .then(result => {
+         const jsonResponse = {
+           message: `Order ${req.params.orderId} deleted successfully!`,
+           requests: [
+             {
+               type: 'POST',
+               url: 'http://localhost:4000/orders',
+               body: { productId: 'ID', quantity:'Number' },
+               description: 'create a new order'
+             }
+           ]
+         };
+         res.status(200).json(jsonResponse);
+       })
+       .catch(error => {
+         res.status(500).json({ error });
+       });
+};
