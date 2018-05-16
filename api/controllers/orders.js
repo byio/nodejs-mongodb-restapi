@@ -35,8 +35,9 @@ exports.orders_get_all = (req, res, next) => {
 
 exports.orders_get_one = (req, res, next) => {
   Order.findById(req.params.orderId)
-       .select('_id product quantity')
+       .select('_id user product quantity')
        .populate('product', '-__v')
+       .populate('user', 'email')
        .exec()
        .then(order => {
          if (!order) {
