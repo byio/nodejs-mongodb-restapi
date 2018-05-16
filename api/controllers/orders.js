@@ -71,17 +71,18 @@ exports.orders_create_one = (req, res, next) => {
            }
            const newOrder = new Order({
              _id: mongoose.Types.ObjectId(),
+             user: req.body.userId,
              product: req.body.productId,
              quantity: req.body.quantity
            });
            return newOrder.save();
          })
          .then(result => {
-            const { _id, product, quantity } = result;
+            const { _id, user, product, quantity } = result;
             const jsonResponse = {
               message: 'New order created!',
               createdOrder: {
-                _id, product, quantity
+                _id, user, product, quantity
               },
               requests: [
                 {
@@ -95,7 +96,7 @@ exports.orders_create_one = (req, res, next) => {
           })
           .catch(error => {
             res.status(500).json({
-              message: 'Cannot add invalid product',
+              message: 'Cannot create order.',
               error
             });
           });
