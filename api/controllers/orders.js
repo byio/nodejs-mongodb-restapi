@@ -5,16 +5,17 @@ const Product = require('../models/product');
 
 exports.orders_get_all = (req, res, next) => {
   Order.find()
-       .select('_id product quantity')
+       .select('_id user product quantity')
        .populate('product', 'name')
+       .populate('user', 'email')
        .exec()
        .then(docs => {
          const jsonResponse = {
            count: docs.length,
            orders: docs.map(doc => {
-             const { _id, product, quantity } = doc;
+             const { _id, user, product, quantity } = doc;
              return {
-               _id, product, quantity,
+               _id, user, product, quantity,
                requests: [
                  {
                    type: 'GET',
