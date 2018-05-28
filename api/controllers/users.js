@@ -57,7 +57,7 @@ exports.users_get_one = (req, res, next) => {
 };
 
 exports.users_signup = (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, adminStatus } = req.body;
   User.find({ email })
       .exec()
       .then(userArr => {
@@ -75,7 +75,8 @@ exports.users_signup = (req, res, next) => {
         _id: mongoose.Types.ObjectId(),
         username,
         email,
-        password: hash
+        password: hash,
+        adminStatus
       });
       newUser.save()
              .then(result => {
