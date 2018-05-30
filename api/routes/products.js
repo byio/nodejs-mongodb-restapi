@@ -45,6 +45,6 @@ router.post('/', checkAuth, checkAdmin, upload.single('productImage'), ProductCo
 
 router.patch('/:productId', checkAuth, checkAdmin, ProductControllers.products_update_one);
 
-router.delete('/:productId', checkAuth, ProductControllers.products_delete_one);
+router.delete('/:productId', checkAuth, checkAdmin, ProductControllers.products_delete_one);
 
 module.exports = router;
