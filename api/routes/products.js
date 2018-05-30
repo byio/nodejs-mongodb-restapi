@@ -43,7 +43,7 @@ router.get('/:productId', ProductControllers.products_get_one);
 
 router.post('/', checkAuth, checkAdmin, upload.single('productImage'), ProductControllers.products_create_new);
 
-router.patch('/:productId', checkAuth, ProductControllers.products_update_one);
+router.patch('/:productId', checkAuth, checkAdmin, ProductControllers.products_update_one);
 
 router.delete('/:productId', checkAuth, ProductControllers.products_delete_one);
 
