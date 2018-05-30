@@ -16,6 +16,7 @@ module.exports = (req, res, next) => {
         status: 'verified',
         decoded
       };
+      console.log(req.userData);
       next();
     }
   );

@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 
 const checkAuth = require('../middleware/check-auth');
+const checkAdmin = require('../middleware/check-admin');
 
 // import products-related controller
 const ProductControllers = require('../controllers/products');
@@ -40,7 +41,7 @@ router.get('/', ProductControllers.products_get_all);
 
 router.get('/:productId', ProductControllers.products_get_one);
 
-router.post('/', checkAuth, upload.single('productImage'), ProductControllers.products_create_new);
+router.post('/', checkAuth, checkAdmin, upload.single('productImage'), ProductControllers.products_create_new);
 
 router.patch('/:productId', checkAuth, ProductControllers.products_update_one);
 
